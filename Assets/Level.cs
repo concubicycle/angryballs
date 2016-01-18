@@ -14,9 +14,9 @@ namespace Assets
 
         private BlocksMonitor _blocksMonitor;        
 
-        void Start()
+        void Awake()
         {
-            _blocksMonitor = GetComponent<BlocksMonitor>();
+            _blocksMonitor = GetComponent<BlocksMonitor>();            
         }
 
         public void OnPlayerShoot()
@@ -28,11 +28,7 @@ namespace Assets
         {
             // wait while blocks and ball are stable
             while (!_blocksMonitor.IsStable && !ball.IsInMotion)
-                yield return null;
-
-            int numKnockedDown = _blocksMonitor.NumberKnockedDown;
-
-            
+                yield return null;            
         }
     }
 }
