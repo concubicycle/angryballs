@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
+using Assets.Scripts;
 
 namespace Assets
 {
@@ -9,6 +9,7 @@ namespace Assets
         #region Editor Variables
         public float maxPullDistance = 2.0f;
         public GameObject ball;
+        public GameObject ballPouch;
         public Transform center;
         public float pullAmount = 3.0f;
         public float springConstant = 1000.0f;
@@ -38,16 +39,22 @@ namespace Assets
 
         IEnumerator MonitorDragging()
         {
+            ballPouch.transform.parent = ball.transform;
+            ballPouch.transform.position = ball.transform.position;
+            ballPouch.transform.MatchUpVector(ball.transform.up);
+
             while (Input.GetMouseButton(0))
             {
                 Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector3 mouseDisplacement = center.position - mousePos;
+                Vector2 ballUp = new Vector2(-mouseDisplacement.y, mouseDisplacement.x);
 
                 //set ball position based on touch location
                 float ballDispMagnitude = Mathf.Min(mouseDisplacement.magnitude / pullAmount, maxPullDistance);
                 Vector2 ballPos = center.position + (-mouseDisplacement.normalized) * ballDispMagnitude;
 
-                ball.transform.position = new Vector3(ballPos.x, ballPos.y, ball.transform.position.z);                
+                ball.transform.position = new Vector3(ballPos.x, ballPos.y, ball.transform.position.z);
+                ball.transform.MatchUpVector(ballUp);
 
                 yield return null;
             }
@@ -84,10 +91,10 @@ namespace Assets
 
                 _ballRigidBody.AddForce(_ballDisplacement * fMag);
 
-
                 yield return dt;
             }
-            
+
+            ballPouch.transform.parent = ball.transform.parent;
         }
     }
 }
