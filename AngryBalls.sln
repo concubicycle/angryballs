@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngryBalls.CSharp", "AngryBalls.CSharp.csproj", "{88354CAD-E386-BFC1-A672-4B27B23996E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStateManagement", "GameStateManagement\GameStateManagement.csproj", "{BB685580-8302-49FC-B753-AA30BE1C0D28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{88354CAD-E386-BFC1-A672-4B27B23996E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88354CAD-E386-BFC1-A672-4B27B23996E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88354CAD-E386-BFC1-A672-4B27B23996E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB685580-8302-49FC-B753-AA30BE1C0D28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB685580-8302-49FC-B753-AA30BE1C0D28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB685580-8302-49FC-B753-AA30BE1C0D28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB685580-8302-49FC-B753-AA30BE1C0D28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

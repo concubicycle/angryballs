@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Assets.Scripts;
+using GameStateManagement;
+using Assets.GameStateManagement;
 
 namespace Assets
 {
@@ -12,13 +14,21 @@ namespace Assets
         public GameObject ballPouch;
         public Transform center;
         public float pullAmount = 3.0f;
-        public float springConstant = 1000.0f;
+        public float springConstant = 500.0f;
         #endregion        
 
         private Rigidbody2D _ballRigidBody;
         private float _originalBallGravityScale;
         
-        
+        private bool IsBallGravityOn
+        {
+            set
+            {
+                _ballRigidBody.gravityScale = value ? _originalBallGravityScale : 0;
+            }
+        }
+
+        #region Unity Methods
         void Awake()
         {
             _ballRigidBody = ball.GetComponent<Rigidbody2D>();
@@ -27,21 +37,38 @@ namespace Assets
         void Start()
         {
             _originalBallGravityScale = _ballRigidBody.gravityScale;
-            _ballRigidBody.gravityScale = 0;
+            IsBallGravityOn = false;
             _ballRigidBody.transform.position = center.transform.position;
+
+            ResetBall();
         }
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if(GameStateManager.Instance.CurrentGameState.Is<PlayingGameState>() && Input.GetMouseButtonDown(0))
                 StartCoroutine(MonitorDragging());
         }
+        #endregion
 
-        IEnumerator MonitorDragging()
+        private void OnBallLaunched()
         {
-            ballPouch.transform.parent = ball.transform;
+            StartCoroutine(ApplyForce());
+        }
+
+        private void ResetBall()
+        {
+            ball.transform.position = center.position;
+            ball.transform.MatchUpVector(Vector2.up);
+            IsBallGravityOn = false;
             ballPouch.transform.position = ball.transform.position;
             ballPouch.transform.MatchUpVector(ball.transform.up);
+            ballPouch.transform.parent = ball.transform;
+        }
+
+        #region Coroutines
+        IEnumerator MonitorDragging()
+        {
+            ResetBall();
 
             while (Input.GetMouseButton(0))
             {
@@ -56,18 +83,16 @@ namespace Assets
                 ball.transform.position = new Vector3(ballPos.x, ballPos.y, ball.transform.position.z);
                 ball.transform.MatchUpVector(ballUp);
 
+
+                //
+                Debug.DrawLine(center.transform.position, ball.transform.position);
+
                 yield return null;
             }
 
             OnBallLaunched();
         }
-
-        private void OnBallLaunched()
-        {
-            _ballRigidBody.gravityScale = _originalBallGravityScale;
-            StartCoroutine(ApplyForce());
-        }
-
+        
         /// <summary>
         /// This coroutine simulates a rubber band gradually applying force to the ball,
         /// using Hooke's law every frame to apply force. F = kX
@@ -80,22 +105,40 @@ namespace Assets
             Vector2 originalBallDisplacement = (center.position - ball.transform.position).normalized; //center to ball 
             Vector2 _ballDisplacement = originalBallDisplacement;
 
-            WaitForSeconds dt = new WaitForSeconds(0.01f);
+            WaitForSeconds dt = new WaitForSeconds(Time.fixedDeltaTime);
 
-            while(Vector2.Dot(originalBallDisplacement, _ballDisplacement) > 0)
+            while(Vector2.Dot(originalBallDisplacement, _ballDisplacement) > 0.1f)
             {
                 _ballDisplacement = (center.position - ball.transform.position);
+
+                // since last frame, we might have gone past center already
+                if (Vector2.Dot(originalBallDisplacement, _ballDisplacement) < 0.1f)
+                    break;
+
                 float fMag = springConstant * _ballDisplacement.magnitude;
 
                 _ballDisplacement.Normalize();
 
-                _ballRigidBody.AddForce(_ballDisplacement * fMag);
+                _ballRigidBody.AddForce(originalBallDisplacement * fMag);
 
+                Debug.DrawLine(center.transform.position, ball.transform.position);
                 yield return dt;
             }
 
+            IsBallGravityOn = true;
             ballPouch.transform.parent = ball.transform.parent;
         }
+
+        IEnumerator KeepPouchAlignedWithBall()
+        {
+            while(Vector2.Distance(ballPouch.transform.position, center.position) < maxPullDistance)
+            {
+                ballPouch.transform.position = ball.transform.position;
+                ballPouch.transform.MatchUpVector(ball.transform.up);
+                yield return null;
+            }
+        }
+        #endregion
     }
 }
 
