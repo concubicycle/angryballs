@@ -5,8 +5,9 @@ namespace GameStateManagement
 {
     public class InitialGameState : GameStateBase<InitialGameState>
     {
-        public override void EnterState()
+        public override void StateStaticInitialize()
         {
+            throw new NotImplementedException();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using Assets;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AngryBalls.Assets
 {
@@ -24,10 +25,42 @@ namespace AngryBalls.Assets
 
         private IEnumerable<MovementMonitor> SceneBuildingBlocks { get; set; }
 
+        /// <summary>
+        /// Returns the visible bounds of all the blocks in the level.
+        /// </summary>
+        public Bounds BlockBounds
+        {
+            get
+            {
+                float minX, maxX, minY, maxY;
+                minX = minY = float.MaxValue;
+                maxX = maxY = float.MinValue;
+
+                foreach(var block in SceneBuildingBlocks)
+                {
+                    Vector3 min = block.GetComponent<Renderer>().bounds.min;
+                    Vector3 max = block.GetComponent<Renderer>().bounds.max;
+
+                    minX = Mathf.Min(minX, min.x);
+                    minY = Mathf.Min(minY, min.y);
+                    maxX = Mathf.Max(maxX, max.x);
+                    maxY = Mathf.Max(maxY, max.y);
+                }
+
+                return new Bounds
+                {
+                    min = new Vector3(minX, minY, 0),
+                    max = new Vector3(maxX, maxY, 0)
+                };
+
+            }
+        }
+
+
         // Use this for initialization
         void Start()
         {
-            SceneBuildingBlocks = Object.FindObjectsOfType<MovementMonitor>();
+            SceneBuildingBlocks = gameObject.GetComponentsInChildren<MovementMonitor>();
             HaveBlocksMoved = false;
 
             StartCoroutine(BeginMonitoring());

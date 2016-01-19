@@ -6,9 +6,9 @@ namespace Assets.GameStateManagement
 {
     class MainMenuGameState : GameStateBase<MainMenuGameState>
     {
-        public override void EnterState()
+        public override void StateStaticInitialize()
         {
-            Time.timeScale = 0;
+            Time.timeScale = 0.0f;
         }
     }
 }

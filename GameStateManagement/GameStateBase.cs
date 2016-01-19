@@ -14,7 +14,9 @@ namespace GameStateManagement
     {
         private static TGameState _instance;
 
-        public static string GameStateName { get; protected set; }        
+        public event Action OnEnter;        
+
+        public static string GameStateName { get; protected set; }
 
         public static TGameState Instance
         {
@@ -37,9 +39,10 @@ namespace GameStateManagement
 
 
         /// <summary>
-        /// Function is mandatory, and must be implemented by children
+        /// Function for handling state-entering logic that can go
+        /// right in the state class, as opposed to other controllers. 
         /// </summary>
-        public abstract void EnterState();      
+        public abstract void StateStaticInitialize();      
         
         /// <summary>
         /// Functionality for returning to this state from any other state
@@ -71,6 +74,11 @@ namespace GameStateManagement
                 return true;
 
             return false;
+        }
+
+        public virtual void EnterState()
+        {
+            if (OnEnter != null) OnEnter();
         }
         #endregion
 

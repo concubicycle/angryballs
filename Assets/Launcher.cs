@@ -62,6 +62,11 @@ namespace Assets
             IsBallGravityOn = false;
             ballPouch.transform.position = ball.transform.position;
             ballPouch.transform.MatchUpVector(ball.transform.up);
+
+            // "parent" refers to the parent in the scene tree.
+            // we want the ballPouch to be the child of the ball
+            // in the scene tree, which will mean that it will move 
+            // wherever the ball moves, rotate whenever the ball rotates...etc. 
             ballPouch.transform.parent = ball.transform;
         }
 
@@ -126,6 +131,12 @@ namespace Assets
             }
 
             IsBallGravityOn = true;
+
+            
+            // the ballPouch starts off as a child of the ball 
+            // in the scene tree. Here, we want to detatch it, 
+            // so we say "make the ball pouch be the child of
+            // ball's parent in the scene tree
             ballPouch.transform.parent = ball.transform.parent;
         }
 

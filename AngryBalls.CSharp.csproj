@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -76,10 +78,7 @@
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
     </Reference>
     <Reference Include="GameStateManagement">
-      <HintPath>Assets\plugins\GameStateManagement.dll</HintPath>
-    </Reference>
-    <Reference Include="GameStateManagement">
-      <HintPath>Assets\Plugins\GameStateManagement.dll</HintPath>
+      <HintPath>Assets\GameStateManagement.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -91,9 +90,11 @@
     <Compile Include="Assets\GameStateManagement\PlayingGameState.cs" />
     <Compile Include="Assets\Launcher.cs" />
     <Compile Include="Assets\Level.cs" />
+    <Compile Include="Assets\MainCameraController.cs" />
     <Compile Include="Assets\Math.cs" />
     <Compile Include="Assets\MovementMonitor.cs" />
     <Compile Include="Assets\TransformExtensions.cs" />
+    <Compile Include="Assets\UI\Fps.cs" />
     <Compile Include="Assets\UI\StartMenuController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />

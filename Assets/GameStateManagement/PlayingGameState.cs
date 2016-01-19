@@ -6,7 +6,7 @@ namespace Assets.GameStateManagement
 {
     public class PlayingGameState : GameStateBase<PlayingGameState>
     {
-        public override void EnterState()
+        public override void StateStaticInitialize()
         {
             Time.timeScale = 1.0f;
         }

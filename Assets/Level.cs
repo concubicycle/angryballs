@@ -14,6 +14,12 @@ namespace Assets
 
         private BlocksMonitor _blocksMonitor;        
 
+        public Bounds LevelBounds
+        {
+            get { return _blocksMonitor.BlockBounds; }
+        }
+
+
         void Awake()
         {
             _blocksMonitor = GetComponent<BlocksMonitor>();            
